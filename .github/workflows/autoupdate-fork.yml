@@ -1,0 +1,27 @@
+name: Sync Fork
+
+on:
+  workflow_dispatch:
+  schedule:
+  - cron: "0 12 * * *"
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2  
+      - name: Upstream Sync
+        # You may pin to the exact commit or the version.
+        # uses: aormsby/Fork-Sync-With-Upstream-action@1090e365224fc834e7e1de521c417ded2d6fcb53
+        uses: aormsby/Fork-Sync-With-Upstream-action@v3.4.1
+        with:
+          # Branch receiving updates from the upstream repo, e.g. => main, master, prod
+          target_sync_branch: main
+          # Input for passing secrets.GITHUB_TOKEN when disabling persistent auth in the checkout step
+          target_repo_token: ${{ secrets.GITHUB_TOKEN }}
+          # Upstream repository, e.g. => aormsby/Fork-Sync-With-Upstream-action
+          upstream_sync_repo: Simsz/russian-roulette
+          # Branch to sync from, e.g. => main, master, dev
+          upstream_sync_branch: main
+          shallow_since: '3 years'
